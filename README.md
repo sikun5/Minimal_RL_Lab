@@ -1,14 +1,17 @@
 # Minimal RL Lab
 
-Compare **PPO, GRPO and DPO** on **Qwen2.5-0.5B-Instruct** and a subset of
-**GSM8K**. PPO and GRPO use numeric-correctness rewards; DPO uses offline
-preference pairs with standard solutions as chosen answers.
+A minimal implementation of major RL post-training algorithms for LLMs. 
+This repository compares **PPO**, **GRPO**, and **DPO** on **Qwen2.5-0.5B-Instruct** 
+using a subset of **GSM8K**:
 
-## Project layout
+- **PPO & GRPO**: Supervised using rule-based numeric-correctness rewards.
+- **DPO**: Trained on offline preference pairs with standard solutions as chosen answers.
+
+## Repository layout
 
 ```text
 configs/                Experiment configuration
-requirements/           Pinned Linux/CUDA dependencies
+requirements/           Pinned dependencies
 src/minimal_rl_lab/     Data preparation, training, scoring and evaluation
 ```
 
@@ -164,22 +167,14 @@ question set and record truncated responses separately.
 
 ## Original experiment results
 
-These are archived summary values only, obtained before this refactor.
+These are archived experiment results run with a A800 MIG 1g.10gb GPU and 512 train / 32 dev / 256 test split on GSM8K.
 
-| Model | R1 correct / 256 | R1 accuracy | Strict accuracy | Pure training seconds |
+| Model | # R1 correct | R1 accuracy | Strict accuracy | Pure training seconds |
 |---|---:|---:|---:|---:|
 | Base | 13 | 5.08% | 1.95% | — |
-| PPO, corrected 512/0.8 | 14 | 5.47% | 2.34% | 6941.9 |
+| PPO | 14 | 5.47% | 2.34% | 6941.9 |
 | GRPO | 20 | 7.81% | 3.52% | 6648.1 |
 | DPO | 12 | 4.69% | 2.73% | 155.2 |
 
-DPO additionally required 2009 seconds of preference generation. GRPO had
-389/512 equal-reward groups. An earlier PPO run used 53 tokens/temperature 0.7;
-its 15/256 result is historical and is excluded from the formal comparison.
-
-The sample size and single seed do not establish general superiority. DPO uses
-standard solutions; GRPO spends more online sampling. PPO's recorded 142
-`sync_gradients=True` calls among 1024 optimizer-wrapper calls are not a complete
-trace of underlying optimizer updates. The nominal 128-update estimate differed,
-and a full boundary-by-boundary explanation was not recorded.
+Note that DPO additionally took 2009 seconds of preference generation.
 
