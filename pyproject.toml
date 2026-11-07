@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minimal-rl-lab"
+version = "0.1.0"
+description = "A small Qwen/GSM8K comparison of PPO, GRPO and DPO"
+readme = "README.md"
+requires-python = ">=3.10,<3.11"
+dependencies = [
+  "torch==2.5.1+cu121",
+  "trl==0.15.2",
+  "transformers==4.49.0",
+  "peft==0.14.0",
+  "accelerate==1.4.0",
+  "datasets==3.4.1",
+  "bitsandbytes==0.45.3",
+  "huggingface-hub==0.36.2",
+  "numpy==2.1.3",
+  "pandas==2.3.3",
+  "pyarrow==25.0.1",
+]
+
+[project.scripts]
+rl-lab = "minimal_rl_lab.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]

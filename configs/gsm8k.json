@@ -1,0 +1,58 @@
+{
+  "seed": 42,
+  "model": {
+    "repo_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "revision": "7ae557604adf67be50417f59c2c2f167def9a775"
+  },
+  "dataset": {
+    "repo_id": "openai/gsm8k",
+    "name": "main",
+    "revision": "740312add88f781978c0658806c59bc2815b9866",
+    "train_size": 512,
+    "dev_size": 32,
+    "test_size": 256
+  },
+  "generation": {
+    "temperature": 0.8,
+    "top_p": 1.0,
+    "max_prompt_tokens": 512,
+    "max_completion_tokens": 512,
+    "eval_batch_size": 16,
+    "preference_batch_size": 16
+  },
+  "adaptation": {
+    "r": 8,
+    "alpha": 16,
+    "dropout": 0.0,
+    "target_modules": [
+      "q_proj",
+      "v_proj"
+    ],
+    "quant_type": "nf4",
+    "gradient_checkpointing": true
+  },
+  "ppo": {
+    "learning_rate": 1e-05,
+    "kl_coef": 0.02,
+    "cliprange": 0.2,
+    "num_ppo_epochs": 2,
+    "microbatch": 1,
+    "gradient_accumulation": 8,
+    "generation_chunk_size": 2
+  },
+  "grpo": {
+    "learning_rate": 1e-05,
+    "beta": 0.02,
+    "num_generations": 4,
+    "microbatch": 4,
+    "gradient_accumulation": 2
+  },
+  "dpo": {
+    "learning_rate": 1e-05,
+    "beta": 0.1,
+    "microbatch": 1,
+    "gradient_accumulation": 8,
+    "max_samples_per_question": 4,
+    "min_pairs": 128
+  }
+}
